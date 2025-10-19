@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
@@ -14,6 +17,10 @@ import application.dto.RegisterDTO;
 import application.service.UserService;
 
 import java.util.Map;
+
+@RestController
+@RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     private UserService userService;
@@ -41,6 +48,6 @@ public class UserController {
         String email = request.get("email");
 
         userService.sendVerificationCode(email);
-        return ResponseEntity.ok(1); 
+        return ResponseEntity.ok("Verification code sent to " + email); 
     }
 }
