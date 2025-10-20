@@ -18,36 +18,34 @@ import application.service.UserService;
 
 import java.util.Map;
 
+//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     private UserService userService;
-    
+
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    
     @PostMapping("login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO request) throws IOException {
-
-        return ResponseEntity.ok(1); 
+        Map<String, String> result = userService.login(request);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterDTO request) throws IOException {
-        
-        return ResponseEntity.ok(1); 
+        Map<String, String> result = userService.register(request);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("send-code")
-    public ResponseEntity<?> sendVerificationCode(@Valid @RequestBody Map<String, String> request) {
+    public ResponseEntity<?> sendVerificationCode(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-
         userService.sendVerificationCode(email);
-        return ResponseEntity.ok("Verification code sent to " + email); 
+        return ResponseEntity.ok("Verification code sent to " + email);
     }
 }

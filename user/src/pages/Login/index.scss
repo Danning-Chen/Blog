@@ -89,6 +89,12 @@
         height: auto;
         color: aquamarine;
         padding: 0.5rem;
+
+        &.sending {
+            cursor: not-allowed;
+            pointer-events: none; // ⬅️ disables click, hover, etc.
+            opacity: 0.6;
+        }
     }
 }
 

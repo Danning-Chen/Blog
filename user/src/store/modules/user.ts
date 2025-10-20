@@ -1,5 +1,7 @@
 import { createSlice, type Dispatch } from "@reduxjs/toolkit";
 import { setToken as _setToken, getToken, removeToken } from "../../utils";
+import { loginAPI } from "../../apis/user";
+import type { LoginDTO } from "../../types";
 
 interface UserState {
     token : string,
@@ -33,7 +35,18 @@ const userStore = createSlice({
 })
 
 const { setToken, setUserInfo, clearUserInfo } = userStore.actions
-
 const userReducer = userStore.reducer
+
+const fetchLogin = (loginDTO: LoginDTO) => {
+    return async (dispatch: Dispatch) => {
+        const res = await loginAPI(loginDTO)
+        dispatch(setToken(res.data.token))
+        return res;
+    }
+}
+
+
+
+export { fetchLogin, setToken, clearUserInfo }
 
 export default userReducer

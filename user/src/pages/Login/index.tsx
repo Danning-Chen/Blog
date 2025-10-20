@@ -1,9 +1,15 @@
 
 import { useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
+import type { AppDispatch } from "../../store";
 import "./index.scss"
-import { sendVerificationCode } from '../../apis/user'
+import { sendVerificationCodeAPI, registerAPI, loginAPI } from '../../apis/user'
+import { fetchLogin } from '../../store/modules/user'
 
 const login = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -25,13 +31,55 @@ const login = () => {
             return;
         }
 
+      try {
+    const res = await dispatch(fetchLogin({ email, password }));
+
+    // ✅ Handle Redux Toolkit fulfilled action
+    if (res.data.status === 'success') {
+      setMessage('Login successful!');
+      navigate('/');
+    } else {
+      // If backend returns an error response (200 OK but failure)
+      setMessage(res.data.message || 'Login failed.');
+    }
+  } catch (err: any) {
+    // ✅ This runs for thrown exceptions (e.g. network error, 401)
+    console.error(err);
+    setMessage(err?.response?.data?.message || err?.message || 'Server error.');
+  }
+
     }
 
     const handleRegister = async () => {
+        if (password.trim() === '' || email.trim() === '') {
+            setMessage('All fields are required.');
+            return;
+        }
+
+        if (password.length < 8) {
+            setMessage('Password must be at least 8 characters.');
+            return;
+        }
+
+        try {
+            const res = await registerAPI({ password: password, email: email, code: code });
+            console.log(res)
+            if (res.data.status === 'success') {
+                setMessage(res.data.message);
+                //navigate('/login');
+            } else {
+                setMessage(res.data.message);
+            }
+        }
+        catch (err: any) {
+            console.log(err)
+        }
 
     }
 
     const handleSend = async () => {
+        setError("")
+
         if (email.trim() === '') {
             setError('Please enter a valid email.');
             return;
@@ -51,7 +99,14 @@ const login = () => {
             });
         }, 1000);
 
-        await sendVerificationCode({ email: email });
+        try {
+            const res = await sendVerificationCodeAPI({ email: email });
+            console.log(res);
+            setError("Verification code sent successfully!!")
+        } catch (error: any) {
+            console.error("error", error);
+        }
+
     }
 
     return (
@@ -69,11 +124,19 @@ const login = () => {
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
                     <input onChange={(e) => { setEmail(e.target.value) }}
-                        id="username" type="text" placeholder="Username or email" />
+                        id="username" type="text" placeholder="Email" />
                 </div>
 
                 {mode === 1 && <div className="form-group">
-                    <button onClick={handleSend} className='send-btn'>Send Verification Code</button>
+
+                    <div>
+                        <button onClick={handleSend} className={`send-btn ${isSending ? "sending" : ""}`}>
+                            Send Verification Code</button>
+                        {secondsLeft > 0 &&
+                            <span style={{ marginLeft: "10px" }}>Resend after: {secondsLeft}</span>}
+
+                    </div>
+                    <span>{error}</span>
                     <input onChange={(e) => setCode(e.target.value)}
                         id="code" type="text" placeholder="Please enter your code here" />
                 </div>}
@@ -84,9 +147,13 @@ const login = () => {
                         id="password" type="password" placeholder="Password" />
                 </div>
 
+                <div>
+                    {message}
+                </div>
+
                 {mode === 0 ?
-                    <button className="login-btn">Login</button>
-                    : <button className="login-btn">Register</button>}
+                    <button onClick={handleLogin} className="login-btn">Login</button>
+                    : <button onClick={handleRegister} className="login-btn">Register</button>}
 
             </div>
         </div>
