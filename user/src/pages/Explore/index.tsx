@@ -18,7 +18,14 @@ const explore = () => {
             </div>
 
             <div className="explore-right">
-                right
+                
+                <div>
+                    search tag
+                </div>
+
+                <div>
+                    tags
+                </div>
             </div>
 
 
