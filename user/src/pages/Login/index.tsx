@@ -22,6 +22,7 @@ const login = () => {
 
     const handleMode = (mode: number) => {
         setMode(mode);
+        setMessage("");
     }
 
     const handleLogin = async () => {
@@ -31,22 +32,20 @@ const login = () => {
             return;
         }
 
-      try {
-    const res = await dispatch(fetchLogin({ email, password }));
+        try {
+            const res = await dispatch(fetchLogin({ email, password }));
 
-    // ✅ Handle Redux Toolkit fulfilled action
-    if (res.data.status === 'success') {
-      setMessage('Login successful!');
-      navigate('/');
-    } else {
-      // If backend returns an error response (200 OK but failure)
-      setMessage(res.data.message || 'Login failed.');
-    }
-  } catch (err: any) {
-    // ✅ This runs for thrown exceptions (e.g. network error, 401)
-    console.error(err);
-    setMessage(err?.response?.data?.message || err?.message || 'Server error.');
-  }
+            // ✅ Handle Redux Toolkit fulfilled action
+            if (res.data.status === 'success') {
+                setMessage('Login successful!');
+                navigate('/');
+            } else {
+                // If backend returns an error response (200 OK but failure)
+                setMessage(res.data.message || 'Login failed.');
+            }
+        } catch (err: any) {
+            console.error(err);
+        }
 
     }
 

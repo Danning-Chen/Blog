@@ -1,0 +1,38 @@
+.explore {
+  display: flex;
+    height: auto;
+    width: 1120px;
+
+    background: yellow;
+
+    padding-top: 90px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    gap: 10px;
+
+    .explore-left {
+        width:800px ;
+
+        .left-top {
+
+            height: 300px;
+            background: rgb(241, 105, 123);
+        }
+
+        .left-buttom {
+            height: 1500px;
+            background: rgb(241, 105, 123);
+            margin-top: 10px;
+        }
+    }
+
+    .explore-right {
+        width: 310px;
+        height: 500px;
+        background: rgb(149, 235, 194);
+    }
+
+
+}

@@ -1,0 +1,66 @@
+.home {
+    display: flex;
+
+    height: auto;
+    width: 1120px;
+
+    background: yellow;
+
+    padding-top: 90px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    gap: 10px;
+
+
+    .home-left {
+        width: 100px;
+        background: rgb(157, 157, 194);
+    }
+
+    .home-middle {
+        width: 700px;
+        height: 2000px;
+        background: rgb(241, 218, 218);
+
+        .middle-top {
+            height: 300px;
+            background: rgb(221, 63, 63);
+            border-radius: 5px;
+        }
+        .middle-buttom {
+            height: 1600px;
+
+            background: rgb(221, 63, 63);
+            margin-top: 10px;
+            border-radius: 5px;
+
+        }
+    }
+
+    .home-right {
+        width: 300px;
+        background: rgb(193, 233, 193);
+
+        .right-top {
+
+            height: 200px;
+
+            background: rgb(174, 174, 83);
+
+            border-radius: 5px;
+
+        }
+
+        .right-buttom {
+             height: 200px;
+
+            background: rgb(141, 193, 166);
+
+            margin-top: 10px;
+
+            border-radius: 5px;
+        }
+    }
+}
